@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  go-app:
+    build: .
+    container_name: golang-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - LOG_LEVEL=INFO
+      - POOL_COUNT=100
+      - DB_USER=test_user
+      - DB_PASSWORD=test_password
+      - DB_NAME=test_db
+    restart: on-failure
+
+  db:
+    image: postgres:17
+    container_name: postgres-db
+    environment:
+      - POSTGRES_USER=test_user
+      - POSTGRES_PASSWORD=test_password
+      - POSTGRES_DB=test_db
+    restart: on-failure
